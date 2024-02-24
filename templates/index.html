@@ -1,42 +1,10 @@
-<!-- Same as the previous HTML file -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="index.css" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
   <title>Test</title>
-
-  <style>
-    body {
-      font-family: Poppins, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #f8e6cb;
-    }
-
-    h1 {
-      color: rgb(19, 172, 211);
-      margin-left: 20px;
-    }
-
-    .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 20px;
-      background-color:rgb(19, 172, 211);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .vd {
-      border-radius: 5px;
-    }
-  </style>
-
 </head>
 <body>
 
@@ -46,47 +14,7 @@
   <button id="capture" class="btn">Capture Photo</button>
   <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
   
-  <script>
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function(stream) {
-        var video = document.getElementById('video');
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch(function(err) {
-        console.error('Error accessing camera: ', err);
-      });
-
-    document.getElementById('capture').addEventListener('click', function() {
-      var video = document.getElementById('video');
-      var canvas = document.getElementById('canvas');
-      var context = canvas.getContext('2d');
-      context.drawImage(video, 0, 0, 640, 480);
-      
-      // Convert the canvas content to base64 data URL
-      var imageData = canvas.toDataURL('image/png');
-
-      // Send the image data to the server (see next step)
-      sendToServer(imageData);
-    });
-
-    function sendToServer(imageData) {
-      fetch('/upload', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ image: imageData })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Server response:', data);
-      })
-      .catch(error => {
-        console.error('Error sending data to server:', error);
-      });
-    }
-  </script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
